@@ -1,9 +1,20 @@
+//REQUIREMENTS
 var express = require('express');
-var app = express();
+		app = express();
+		bodyParser = require('body-parser');
+		mongoose = require('mongoose');
 
+//CONFIG
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+
+// body parser config to accept our datatypes
+app.use(bodyParser.urlencoded({ extended: true }));
+//ROUTES:
 
 app.get('/', function (req, res) {
-	res.send("hello world");
+	
+	res.render('index', {});
 });
 
 
