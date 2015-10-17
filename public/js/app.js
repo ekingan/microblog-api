@@ -1,9 +1,10 @@
 $(document).ready(function() {
 
-	$('form').on('submit', function (event){ //on submit of post
+	$('#post-form').on('submit', function (event){ //on submit of post
 			event.preventDefault();
-			var postData = $('#write-post').serialize(); //serialize post data
-			console.log("this is the post data: " + postData);
+		
+			var postData = $(this).serialize(); //serialize post data
+			console.log("this is the post data: ", postData);
 
 			//ajax call for data - DO I NEED TO SET UP POSTS PATH?
 			$.ajax({
@@ -14,9 +15,11 @@ $(document).ready(function() {
 			.done( function(data) {
 				console.log("you successfully posted: ", data);
 				var blogPost = $('#write-post').val();
+				console.log("this is the blog post: ", blogPost);
 				console.log('submit called');
 				if (blogPost !== ''){ 
 					$('ul').prepend( makeHTMLString(blogPost) );
+					$('#write-post').val('');
 					
 				}
 			}) //if failed notify
@@ -24,17 +27,17 @@ $(document).ready(function() {
 				console.log("failed to post");
 			});
 
-			$('#write-post').val('');
+			
 		});		
 	//event handler for delete
 	$('#post').on('click', '.close', function(event){
 		event.preventDefault();
 		console.log("deleted!");
 
-		var postID = $(this).data().id;
+		var postID = $('#post').data().id;
 		console.log(this);
 		console.log(postID);
-		var postToDelete = $(this).closest('li');
+		var postToDelete = $('#post').closest('li');
 
 		$.ajax({
 			type:'delete',
