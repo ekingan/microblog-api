@@ -30,7 +30,7 @@
           <div class="col-lg-6 col-lg-offset-4">
             <form action ="" class="form-group" id='post-form'>
             <div class="input-group">
-              <input type="text submit" id="write-post" class="form-control" placeholder="say something...">
+              <input type="text submit" id="write-post" name='content' class="form-control" placeholder="say something...">
 
               <span class="input-group-btn">
                 <button type="submit" class="btn btn-default" data-id='<%%>'  data-placement="right" title="Write your blog post here.">Post</button>
@@ -54,7 +54,7 @@
 
                   <ul class="list-group list-unstlyled" id='post'>
                     <% posts.forEach(function(post){ %>
-                      <li class="list-group-item" > <%= posts.blogPost %> <button data-id='<%= posts.id %>' type='button' class='close'>x</button></li>"
+                      <li class="list-group-item post" > <%= posts.content %> <button data-id='<%= post._id %>' type='button' class='close'>x</button></li>"
 
                     <%});%>
                   <h3></h3>
