@@ -1,33 +1,45 @@
 $(document).ready(function() {
 
-	$('#post-form').on('submit', function (event){ //on submit of post
-			event.preventDefault();
-		
 
-			//ajax call for data - DO I NEED TO SET UP POSTS PATH?
-			$.ajax({
-				url: '/posts',
-				type: 'POST',
-				data: $(this).serialize()
-			}) //when post data is submitted, post to page
-			.done( function(data) {
-				console.log("you successfully posted: ", data);
-				var blogPost = $('#write-post').val();
-				console.log("this is the blog post: ", blogPost);
-				console.log('submit called');
-				if (blogPost !== ''){ 
-					$('ul').prepend( makeHTMLString(blogPost) );
-					$('#post-form')[0].reset();
-					$('#write-post').focus();
-					
-				}
-			}) //if failed notify
-			.fail(function(data){
-				console.log("failed to post");
-			});
+	//CREATE NEW POST
+	//submit new post form
+	$('.post-form').on('submit', function (event){ 
+		event.preventDefault();
+		//create variable of post
+		var blogPost = $('#write-post').val();
+		console.log(blogPost);
+		//check that input is not empty
+			if (blogPost !== ''){
+			//ajax post to server
+				$.ajax({
+					url: '/api/posts',
+					type: 'POST',
+					data: $(this).serialize()
+				}) //when post data is submitted, post to page
+					.done( function(data) {
+						console.log("you successfully posted: ", data);
+						console.log("this is the blog post: ", blogPost);
+						console.log('submit called');
+					 
+						$('.posts').prepend( makeHTMLString(blogPost) );
+						$('.post-form')[0].reset();
+						$('#write-post').focus();
+					})
+				//if failed notify
+					.fail(function(data){
+						console.log("failed to post");
+					});
+
+			} else {
+			console.log("the form is empty");
+			}
+	});
+	
+		
+	
 
 			
-		});		
+		
 	//event handler for delete
 	$('.posts').on('click', '.close', function(event){
 		event.preventDefault();
@@ -38,7 +50,7 @@ $(document).ready(function() {
 		console.log(postToDelete);
 
 		$.ajax({
-			url: '/posts/' + postID,
+			url: '/api/posts/' + postID,
 			type: "DELETE"
 		})
 		.done(function(data) {
@@ -53,10 +65,10 @@ $(document).ready(function() {
 
 
 
-var makeHTMLString = function(blogPost){
-	return "<li class='list-group-item'>" + blogPost + "<button data-id=? type='button' class='close'>x</button></li>";
+	var makeHTMLString = function(blogPost){
+		return "<li class='list-group-item'>" + blogPost + "<button data-id=? type='button' class='close'>x</button></li>";
 
-};
+	};
 });
 
 
