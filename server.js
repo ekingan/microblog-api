@@ -34,26 +34,22 @@ app.get('/', function (req, res) {
 
 //POST route for posts
 app.post('/posts', function(req, res) {
-	console.log(req.body);
 	db.Posts.create(req.body, function(err, posts) {
 		if(err) {
 			console.log("error");
 		}
-		res.json('index', {posts: posts});
+		res.json(post);
 	});
 });
 
 //DELETE route for new posts
 app.delete('/posts/:_id', function(req, res) {
-	console.log('the post id is ', req.params);
-	db.Posts.findOne( {_id: req.params._id} , function (err, posts) {
-		if (err) {
-			console.log("Error deleting post");
-		}
-		db.Post.remove(function (err){
-			res.json('index', {posts: posts});
+	console.log('the post id is ', req.params._id);
+	db.Posts.remove( {_id: req.params}, function (err, post) {
+			console.log("post deleted");
+			res.json("the post was deleted");
 		});
-		});
+		
 });
 
 // // GET route for posts

@@ -29,17 +29,17 @@ $(document).ready(function() {
 			
 		});		
 	//event handler for delete
-	$('#post').on('click', '.close', function(event){
+	$('.posts').on('click', '.close', function(event){
 		event.preventDefault();
 
 		var postID = $(this).data().id;
-		console.log(this);
 		console.log(postID);
 		var postToDelete = $(this).closest('li');
+		console.log(postToDelete);
 
 		$.ajax({
-			type:'DELETE',
 			url: '/posts/' + postID,
+			type: "DELETE"
 		})
 		.done(function(data) {
 			console.log(data);
@@ -57,6 +57,7 @@ var makeHTMLString = function(blogPost){
 	return "<li class='list-group-item'>" + blogPost + "<button data-id=? type='button' class='close'>x</button></li>";
 
 };
+});
 
 
 
@@ -76,6 +77,3 @@ var makeHTMLString = function(blogPost){
 
 
 
-
-
-})
