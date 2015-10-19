@@ -7,7 +7,7 @@ $(document).ready(function() {
 		event.preventDefault();
 		
 		//create variable of post
-		var blogPost = $('#write-post').val();
+		var blogPost = $(this).serialize();
 		console.log(blogPost);
 		//check that input is not empty
 			if (blogPost !== ''){
@@ -15,14 +15,14 @@ $(document).ready(function() {
 				$.ajax({
 					url: '/api/posts',
 					type: 'POST',
-					data: $(this).serialize()
+					data: blogPost
 				}) //when post data is submitted, post to page
 					.done( function(data) {
 						console.log("you successfully posted: ", blogPost);
 						console.log("this is the blog post: ", blogPost);
 						console.log('submit called');
 					 
-						$('.posts').prepend( makePostString(blogPost) );
+						$('.posts').prepend( makePostString(data) );
 						$('.post-form')[0].reset();
 						$('#write-post').focus();
 						
@@ -103,9 +103,9 @@ $(document).ready(function() {
 
 
 
-	var makePostString = function(blogPost){
+	var makePostString = function(data){
 		var $addComment = "<div class='input-group comments'><span class='input-group-btn'><button class='btn btn-default' type='button' id='comment'>Comment</button></span><input type='text' class='form-control' id='write-comment' placeholder='make a comment...'></div>";
-		return "<li class='list-group-item'>" + blogPost + "<button data-id='<%= posts.id %>' type='button' class='close'>x</button></li>" + $addComment;
+		return "<li class='list-group-item'>" + data.content + "<button data-id='" + data._id + "' type='button' class='close'>x</button></li>" + $addComment;
 
 	};
 
