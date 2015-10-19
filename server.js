@@ -6,6 +6,7 @@ var express = require('express');
 		bodyParser = require('body-parser');
 		mongoose = require('mongoose');
 		db = require('./models');
+
 		
 
 //CONFIG
@@ -14,8 +15,10 @@ app.set('view engine', 'ejs');
 app.use('/static', express.static('public'));
 // body parser config to accept our datatypes
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 //CONNECT MONGOOSE
 mongoose.connect('mongodb://localhost/microblog-api');
+
 
 
 
@@ -26,10 +29,16 @@ mongoose.connect('mongodb://localhost/microblog-api');
 app.get('/', function (req, res) {
 	db.Posts.find({}, function(err, posts) {
 		if (err) {
-			console.log("error getting all data from data base");
+			console.log("error getting all posts");
 		}
-	res.render('index', {posts: posts});
+			db.Comments.find({}, function(err, comments){
+				if (err){
+					console.log("error getting all the comments");
+				}
+			
+	res.render('index', {posts: posts, comments: comments});
 	console.log({});
+			});
 		});
 });
 
@@ -40,6 +49,16 @@ app.post('/api/posts', function(req, res) {
 			console.log("error");
 		}
 		res.json(posts);
+	});
+});
+
+//POST route for comments
+app.post('/api/comments', function(req, res) {
+	db.Posts.create(req.body, function(err, commentss) {
+		if(err) {
+			console.log("error");
+		}
+		res.json(comments);
 	});
 });
 

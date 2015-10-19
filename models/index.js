@@ -16,3 +16,4 @@ db.once('open', function(callback){
 });
 
 module.exports.Posts = require('./posts.js');
+module.exports.Comments = require('./comments.js');

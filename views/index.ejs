@@ -40,25 +40,26 @@
             </form><!-- /input-group -->
           </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
-       <!--   <div class="row">
+       <!-- Post Count -->
+        <!--  <div class="row">
           <div class="col-lg-2">
             <div class="panel panel-default">
               <div class="panel-body">
                 <h5>There have been no blog posts yet.</h5>
-              </div> Count Column
               </div> 
-            </div>  -->
+              </div> 
+            </div>  --> 
             <div class="col-lg-8">
               <div class="panel panel-default">
                 <div class="panel-body">
 
                   <ul class="list-group list-unstlyled posts">
                     <% posts.forEach(function(post){ %>
-                      <li class="list-group-item post" > <%= post.content %> <button data-id='<%= post._id %>' type='button' class='close'>x</button></li>
+                      <li class="list-group-item post" > <%= post.content %> <button data-id='<%= post.id %>' type='button' class='close'>x</button></li>
 
                     <%});%>
-                  <h3></h3>
-                   
+                        
+                  
               
                     <!-- List group -->
                   </ul>
