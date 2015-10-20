@@ -52,17 +52,22 @@
             <div class="col-lg-8">
               <div class="panel panel-default">
                 <div class="panel-body">
-
+                  <!--Posts UL-->
                   <ul class="list-group list-unstlyled posts">
                     <% posts.forEach(function(post){ %>
+                    <% console.log(post.comments.length) %>
                       <li class="list-group-item post" > <%= post.content %> <button data-id='<%= post.id %>' type='button' class='close'>x</button></li>
-
-                    <%});%>
-                        
-                  
-              
-                    <!-- List group -->
-                  </ul>
+                      <% if (post.comments[0] !== null){  %> 
+                        <ul class="list-group list-unstyled comments">
+                          <% post.comments.forEach(function(comment){ %>
+                            <li class="list-group list-unstyled comments">
+                              <%= comment.content %>
+                            </li>
+                          <% }); %> 
+                        </ul>
+                      <% }; %>
+                    <% }); %>
+                  </ul>                 
                 </div>
               </div> 
             </div> 

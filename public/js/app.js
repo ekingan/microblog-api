@@ -23,6 +23,8 @@ $(document).ready(function() {
 						console.log('submit called');
 					 
 						$('.posts').prepend( makePostString(data) );
+						// add handler for the submit event on the comment form
+						$('.comment-form').on('submit', commentHandler);
 						$('.post-form')[0].reset();
 						$('#write-post').focus();
 						
@@ -41,27 +43,33 @@ $(document).ready(function() {
 	});
 
 	//event handler for comments
-	$(document).on('click', '.comments', function(event){
+	// TODO add form
+	var commentHandler = function(event){
 		event.preventDefault();
-		var commentPost = $('#write-comment').val();
-		var commentID = $(this).attr('data-id');
-
+		var commentPost = $(this).serialize();
+		console.log('just before printing this');
+		console.log($(this));
+		console.log(commentPost);
+		var postID = $(this).attr('data-id');
+		console.log($(this));
+			console.log('hi mom');
 			console.log(commentPost);
-			console.log(commentID);
+			console.log(postID);
 
 			if (commentPost !== ''){
 
 				$.ajax({
-					url: '/api/comments',
+					url: '/api/posts/' + postID +'/comments', 
 					type: 'POST',
-					data: $(this).siblings().serialize()
+					data: commentPost
 				})
 					.done(function(data) {
+						// console.log(data) // data is the comment
+						// 
 							console.log("you successfully made this comment: ", commentPost);
-
-							$('.posts').append.sibblings( makeCommentString(commentPost));
+							$('li').append(makeCommentString(data));
 							
-							$('#write-comment').val();
+							$('#write-comment').val('');
 							$('#write-comment').focus();
 					})
 					.fail(function(data){
@@ -71,7 +79,7 @@ $(document).ready(function() {
 				console.log("the comment box is empty");
 			}
 
-	});
+	};
 	
 		
 	
@@ -104,15 +112,21 @@ $(document).ready(function() {
 
 
 	var makePostString = function(data){
-		var $addComment = "<div class='input-group comments'><span class='input-group-btn'><button class='btn btn-default' type='button' id='comment'>Comment</button></span><input type='text' class='form-control' id='write-comment' placeholder='make a comment...'></div>";
-		return "<li class='list-group-item'>" + data.content + "<button data-id='" + data._id + "' type='button' class='close'>x</button></li>" + $addComment;
+		var $addComment = "<form action ='' class='form-group comment-form' data-id='"+data._id+ "''><div class='input-group comments well well-sm'><span class='input-group-btn'><button class='btn btn-default' type='submit' id='comment' data-id='" + data._id + "'>Comment</button></span>" + 
+		"<input type='text' name='content' class='form-control' id='write-comment' placeholder='make a comment...'></div></form>";
+
+
+		return "<li class='list-group-item'>" + data.content + "<button data-id='" + data._id + "' type='button' class='close'>x</button></li>" + $addComment + "<hr>";
 
 	};
 
-	var makeCommentString = function(commentPost){
-		return "<div class='input-group comments'><span class='input-group-btn'><button class='btn btn-default' type='button' id='commentBtn'>" + commentPost + "</button></span><input type='text' class='form-control' id='write-comment' placeholder='make a comment...'><button data-id='<%= posts.id %>' type='button' class='close'>x</button></div>";
+	var makeCommentString = function(data){
+		return "<li class='list-group-item'>" + data.content + "</li>" + 
+		"<button data-id='" + data._id + "' type='button' class='close'>x</button></div>";
 
 	};
+
+
 	// <button data-id='<%= posts.id %>' type='button' class='close'>x</button>
 
 // 	var postCount = function(count){
